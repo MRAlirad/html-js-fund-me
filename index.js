@@ -1,8 +1,9 @@
-import { ethers, parseEther,formatEther } from 'https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.min.js';
+import { ethers, parseEther, formatEther } from 'https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.min.js';
 import { contractAddress, abi } from './constances.js';
 
 const connectBtn = document.querySelector('#connectButton');
 const fundBtn = document.querySelector('#fundButton');
+const withdrawBtn = document.querySelector('#withdrawButton');
 const balanceBtn = document.querySelector('#balanceButton');
 const ethAmountInput = document.querySelector('#ethAmount');
 
@@ -44,6 +45,24 @@ const fund = async () => {
 	// console.log(transactionResponse);
 };
 
+const withdraw = async () => {
+	console.log(`Withdrawing...`);
+	if (typeof window.ethereum !== 'undefined') {
+		const provider = new ethers.BrowserProvider(window.ethereum);
+		await provider.send('eth_requestAccounts', []);
+		const signer = await provider.getSigner();
+		const contract = new ethers.Contract(contractAddress, abi, signer);
+		try {
+			const transactionResponse = await contract.withdraw();
+			await listenForTransactionMine(transactionResponse, provider);
+		} catch (error) {
+			console.log(error);
+		}
+	} else {
+		withdrawBtn.innerHTML = 'Please install MetaMask';
+	}
+};
+
 const getBalance = async () => {
 	if (!window.ethereum) {
 		balanceBtn.innerHTML = 'Please install MetaMask';
@@ -77,4 +96,5 @@ const listenForTransactionMine = (transactionResponse, provider) => {
 
 connectBtn.addEventListener('click', connect);
 fundBtn.addEventListener('click', fund);
+withdrawBtn.addEventListener('click', withdraw);
 balanceBtn.addEventListener('click', getBalance);
