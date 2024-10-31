@@ -3,6 +3,7 @@ import { contractAddress, abi } from './constances.js';
 
 const connectBtn = document.querySelector('#connectButton');
 const fundBtn = document.querySelector('#fundButton');
+const ethAmountInput = document.querySelector('#ethAmount');
 
 const connect = async () => {
 	if (window.ethereum) {
@@ -19,7 +20,8 @@ const connect = async () => {
 };
 
 const fund = async () => {
-	const ethAmount = '0.1';
+	const ethAmount = ethAmountInput.value;
+
 	if (!window.ethereum) return;
 
 	// connection to the blockchain
@@ -43,10 +45,10 @@ const fund = async () => {
 
 const listenForTransactionMine = (transactionResponse, provider) => {
 	console.log(`Mining ${transactionResponse.hash}`);
-	// listen for this transaction to finish
+	//! listen for this transaction to finish
 	return new Promise((resolve, reject) => {
 		try {
-            //triggers only once
+			//triggers only once
 			provider.once(transactionResponse.hash, async transactionReceipt => {
 				console.log(`Completed with ${await transactionReceipt.confirmations()} confirmations. `); //! Resolves to the number of confirmations this transaction has
 				resolve();
