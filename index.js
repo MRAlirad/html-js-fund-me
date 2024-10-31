@@ -1,8 +1,9 @@
-import { ethers, parseEther } from 'https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.min.js';
+import { ethers, parseEther,formatEther } from 'https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.min.js';
 import { contractAddress, abi } from './constances.js';
 
 const connectBtn = document.querySelector('#connectButton');
 const fundBtn = document.querySelector('#fundButton');
+const balanceBtn = document.querySelector('#balanceButton');
 const ethAmountInput = document.querySelector('#ethAmount');
 
 const connect = async () => {
@@ -43,6 +44,21 @@ const fund = async () => {
 	// console.log(transactionResponse);
 };
 
+const getBalance = async () => {
+	if (!window.ethereum) {
+		balanceBtn.innerHTML = 'Please install MetaMask';
+		return;
+	}
+
+	const provider = new ethers.BrowserProvider(window.ethereum);
+	try {
+		const balance = await provider.getBalance(contractAddress);
+		console.log(formatEther(balance));
+	} catch (error) {
+		console.log(error);
+	}
+};
+
 const listenForTransactionMine = (transactionResponse, provider) => {
 	console.log(`Mining ${transactionResponse.hash}`);
 	//! listen for this transaction to finish
@@ -61,3 +77,4 @@ const listenForTransactionMine = (transactionResponse, provider) => {
 
 connectBtn.addEventListener('click', connect);
 fundBtn.addEventListener('click', fund);
+balanceBtn.addEventListener('click', getBalance);
