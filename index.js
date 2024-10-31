@@ -32,11 +32,29 @@ const fund = async () => {
 	const contract = new ethers.Contract(contractAddress, abi, signer); // A contract instance
 	try {
 		const transactionResponse = await contract.fund({ value: parseEther(ethAmount) });
-		console.log(transactionResponse);
+		await listenForTransactionMine(transactionResponse, provider);
+		// listen for tx to be
+		// listen for an event
 	} catch (error) {
 		alert(error.message);
 	}
 	// console.log(transactionResponse);
+};
+
+const listenForTransactionMine = (transactionResponse, provider) => {
+	console.log(`Mining ${transactionResponse.hash}`);
+	// listen for this transaction to finish
+	return new Promise((resolve, reject) => {
+		try {
+            //triggers only once
+			provider.once(transactionResponse.hash, async transactionReceipt => {
+				console.log(`Completed with ${await transactionReceipt.confirmations()} confirmations. `); //! Resolves to the number of confirmations this transaction has
+				resolve();
+			});
+		} catch (error) {
+			reject(error);
+		}
+	});
 };
 
 connectBtn.addEventListener('click', connect);

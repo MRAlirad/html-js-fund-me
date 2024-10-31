@@ -36,3 +36,7 @@ const contract = new ethers.Contract(contractAddress, abi, signer);
 you need to connect to a hardhat network in order to fund some amount. so you can add a hardhat network to your metamask.
 
 we can import a hardhat `private key` in our metamask to import the hardhat wallet to our metamask.
+
+## Listening for Events and Completed Transactions
+
+after completing the transaction, we want to give the user some communication. so we can either `listen for tx to be mined`, or `listen for an event`
