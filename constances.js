@@ -1,15 +1,16 @@
-export const contractAddress = '0x87D29af343dBa7c8AAAD4F53fC2a17B52b1895ca';
+// export const zkSyncContractAddress = "0x4B5DF730c2e6b28E17013A1485E5d9BC41Efe021"
+// export const contractAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+export const contractAddress = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512';
 export const abi = [
 	{
-		inputs: [
-			{
-				internalType: 'address',
-				name: 'priceFeed',
-				type: 'address',
-			},
-		],
+		inputs: [{ internalType: 'address', name: 'priceFeed', type: 'address' }],
 		stateMutability: 'nonpayable',
 		type: 'constructor',
+	},
+	{
+		inputs: [],
+		name: 'FundMe__NotOwner',
+		type: 'error',
 	},
 	{
 		inputs: [],
@@ -28,7 +29,7 @@ export const abi = [
 		inputs: [],
 		name: 'cheaperWithdraw',
 		outputs: [],
-		stateMutability: 'payable',
+		stateMutability: 'nonpayable',
 		type: 'function',
 	},
 	{
@@ -119,7 +120,7 @@ export const abi = [
 		inputs: [],
 		name: 'withdraw',
 		outputs: [],
-		stateMutability: 'payable',
+		stateMutability: 'nonpayable',
 		type: 'function',
 	},
 ];
